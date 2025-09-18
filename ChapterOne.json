@@ -1,0 +1,55 @@
+[
+    {
+        "event_id": 1,
+        "description": "You find an ancient tome in the dungeon. What do you do?",
+        "choices": [
+            {
+                "choice_id": 1,
+                "text": "Read the tome",
+                "consequence": "You gain knowledge and experience.",
+                "experience_gain": 20
+            },
+            {
+                "choice_id": 2,
+                "text": "Ignore the tome",
+                "consequence": "You continue exploring the dungeon."
+            }
+        ]
+    },
+    {
+        "event_id": 2,
+        "description": "A mysterious figure appears. What do you do?",
+        "choices": [
+            {
+                "choice_id": 1,
+                "text": "Engage in conversation",
+                "consequence": "The figure reveals valuable information.",
+                "information_gain": "The location of a hidden treasure."
+            },
+            {
+                "choice_id": 2,
+                "text": "Attack the figure",
+                "consequence": "The figure defeats you in combat.",
+                "health_loss": 50
+            }
+        ]
+    },
+    {
+        "event_id": 3,
+        "description": "You come across a fork in the path. Which way do you go?",
+        "choices": [
+            {
+                "choice_id": 1,
+                "text": "Take the left path",
+                "consequence": "You discover a shortcut.",
+                "miles_saved": 10
+            },
+            {
+                "choice_id": 2,
+                "text": "Take the right path",
+                "consequence": "You encounter a group of monsters.",
+                "combat": true
+            }
+        ]
+    }
+]

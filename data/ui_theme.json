@@ -1,0 +1,129 @@
+{
+  "defaults":
+  {
+    "colours":
+    {
+      "normal_bg": "#606060",
+      "hovered_bg": "#707070"
+    }
+  },
+
+  "tool_tip":
+  {
+    "colours":
+    {
+      "normal_text": "#FFFFFF",
+      "dark_bg": "#15191eCC"
+    }
+  },
+
+  "world_space_health_bar":
+  {
+    "colours":
+    {
+      "normal_border": "#F0F0F0A0",
+      "unfilled_bar": "#50505080",
+      "filled_bar": "#f4251b"
+    },
+    "misc":
+    {
+      "border_width": "1"
+    }
+  },
+
+  "#game_title":
+  {
+    "colours":
+    {
+      "normal_text": "#FFFFFF",
+      "dark_bg": "#FFFFFF00"
+    },
+    "font":
+    {
+      "name": "londrina_shadow",
+      "size": "75",
+      "regular_path": "data/celticmd.ttf"
+    }
+  },
+
+  "#game_sub_title":
+  {
+    "colours":
+    {
+      "normal_text": "#000000",
+      "dark_bg": "#FFFFFF00"
+    },
+    "font":
+    {
+      "name": "londrina_shadow",
+      "size": "50",
+      "regular_path": "data/celticmd.ttf"
+    }
+  },
+
+  "#screen_text":
+  {
+    "colours":
+    {
+      "normal_text": "#FFFFFF",
+      "dark_bg": "#00000000",
+      "text_shadow": "#505050"
+    },
+    "font":
+    {
+      "name": "just_another_hand",
+      "size": "32",
+      "regular_path": "data/JustAnotherHand.ttf"
+    },
+    "misc":
+    {
+      "text_shadow": "1",
+      "text_shadow_size": "1",
+      "text_shadow_offset": "0,0"
+    }
+  },
+
+  "#small_screen_text":
+  {
+    "colours":
+    {
+      "normal_text": "#FFFFFF",
+      "dark_bg": "#00000000",
+      "text_shadow": "#505050"
+    },
+    "font":
+    {
+      "name": "just_another_hand",
+      "size": "20"
+    },
+    "misc":
+    {
+      "text_shadow": "1",
+      "text_shadow_size": "1"
+    }
+  },
+
+  "#win_message_text":
+  {
+    "colours":
+    {
+      "normal_text": "#FFFFFF",
+      "dark_bg": "#00000000",
+      "text_shadow": "#505050"
+    },
+    "font":
+    {
+      "name": "just_another_hand",
+      "size": "64",
+      "regular_path": "data/JustAnotherHand.ttf"
+    },
+    "misc":
+    {
+      "text_shadow": "1",
+      "text_shadow_size": "1"
+    }
+  }
+
+  
+
+}

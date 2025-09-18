@@ -1,0 +1,50 @@
+[
+    {
+        "race_id": "Races",
+        "description": "Choose which race you'd like to be...",
+        "choices": [
+            {
+                "choice_id": "Human",
+                "description": "Enter a description here..."
+            },
+            {
+                "choice_id": "Elf",
+                "description": "Enter a description here..."
+            }
+        ]
+    },
+
+    {
+        "classes_id": "Classes",
+        "description": "Choose which class you'd like to be...",
+        "choices": [
+            {
+                "choice_id": "Warrior",
+                "description": "Enter a description here...",
+                "hit_die": "d12",
+                "prime_abilty": "str",
+                "saving_throw_prof": ["str", "const"],
+                "proficiencies": ["martial"]
+            },
+            {
+                "choice_id": "Mage",
+                "description": "Enter a description here...",
+                "hit_die": "d6",
+                "prime_abilty": "intel",
+                "saving_throw_prof": ["intel", "wisdom"],
+                "proficiencies": ["no_armor", "no_martial"]
+            },
+            {
+                "choice_id": "Rouge",
+                "description": "Enter a description here...",
+                "hit_die": "d8",
+                "prime_abilty": "dex",
+                "saving_throw_prof": ["dex", "intel"],
+                "proficiencies": ["light_armor", "martial"]
+            }
+        ]
+    }
+]
+
+
+
