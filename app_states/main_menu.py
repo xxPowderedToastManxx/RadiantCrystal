@@ -6,6 +6,10 @@ from pygame_gui.elements.ui_button import UIButton
 from pygame_gui.elements.ui_label import UILabel
 
 from .base_app_state import BaseAppState
+from ..ui_adapter import UIAdapter
+from .combat_state import CombatState
+from ..Player import Player
+from ..Monster import Monster
 
 
 
@@ -61,7 +65,17 @@ class MainMenu(BaseAppState):
                 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == self.new_game_button:
-                    self.set_target_state_name('character_create')
+                    # Create a UI adapter tied to this ui_manager and register a CombatState
+                    ui_adapter = UIAdapter(None, None, self.ui_manager)
+                    # create simple player and monster instances and pass them to the new state
+                    player = Player("Hero")
+                    monster = Monster("Goblin", 1, 6, 1)
+
+                    combat_state = CombatState(ui_adapter, self.state_manager)
+                    # provide incoming data so the combat state can use real objects
+                    combat_state.incoming_transition_data = {"player": player, "monster": monster}
+
+                    self.set_target_state_name('combat')
                     self.trigger_transition()
                     # print("New Game Button Pushed...")
 
