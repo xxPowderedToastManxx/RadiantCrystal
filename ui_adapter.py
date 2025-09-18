@@ -10,6 +10,8 @@ from typing import Sequence, Optional
 import UIController
 from EventHandler import EventHandler
 import pygame
+import Globals
+from typing import Optional
 
 try:
     import pygame_gui
@@ -19,14 +21,38 @@ except Exception:
 
 
 class UIAdapter:
-    def __init__(self, ui: UIController.UIController, event_handler: Optional[EventHandler] = None, ui_manager=None):
+    def __init__(self, ui: Optional[UIController.UIController] = None, event_handler: Optional[EventHandler] = None, ui_manager=None):
+        # ui may be None; in that case we fall back to Globals for drawing
         self._ui = ui
         self._events = event_handler or EventHandler()
         self._ui_manager = ui_manager
 
     def draw_text(self, text: str, x: int, y: int) -> None:
-        # forward to UIController
-        self._ui.draw_text(text, x, y)
+        # forward to UIController when available, otherwise use Globals
+        if self._ui is not None:
+            self._ui.draw_text(text, x, y)
+        else:
+            surface = Globals.FONT.render(text, True, Globals.BLACK)
+            Globals.SCREEN.blit(surface, (x, y))
+
+    def create_buttons(self, options: Sequence[str], rect_x: int = 50, rect_y: int = 150, width: int = 200, height: int = 30):
+        """Create buttons using pygame_gui and return the list of button elements.
+
+        Caller is responsible for calling `remove_buttons` to clean up.
+        """
+        buttons = []
+        if self._ui_manager is not None and pygame_gui is not None:
+            for i, opt in enumerate(options, start=1):
+                btn = pygame_gui.elements.ui_button.UIButton(pygame.Rect((rect_x, rect_y + i * 30), (width, height)), opt, self._ui_manager)
+                buttons.append(btn)
+        return buttons
+
+    def remove_buttons(self, buttons):
+        for b in buttons:
+            try:
+                b.kill()
+            except Exception:
+                pass
 
     def wait_for_action(self, options: Sequence[str]) -> str:
         """Blocking chooser that uses EventHandler for input polling.

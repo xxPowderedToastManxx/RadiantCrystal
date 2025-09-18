@@ -46,9 +46,17 @@ class TestBasic(unittest.TestCase):
 
         m = M()
         ui = DummyUI()
-        cc = CombatController(ui, DiceController())
-        res = cc.combat(p, m)
-        self.assertIn(res["winner"], ("player", "monster"))
+        cc = CombatController()
+        cc.start(p, m, ui)
+        # Drive the controller by simulating a single player attack choice via direct call
+        cc._on_player_choice('Attack')
+        # update to process monster turn
+        cc.update(0.016)
+        # basic sanity checks
+        self.assertIs(cc.player, p)
+        self.assertIs(cc.monster, m)
+        if cc.is_done():
+            self.assertIn(cc.get_result()['winner'], ('player', 'monster'))
 
 
 if __name__ == '__main__':

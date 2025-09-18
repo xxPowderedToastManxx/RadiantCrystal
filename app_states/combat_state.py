@@ -1,8 +1,57 @@
+from .base_app_state import BaseAppState
 from CombatController import CombatController
+from EventHandler import EventHandler
 
-class CombatState:
 
-    def __init__(self):
+class CombatState(BaseAppState):
+    def __init__(self, ui_adapter, state_manager):
+        super().__init__('combat', 'main_menu', state_manager)
+        self.ui = ui_adapter
+        self.event_handler = EventHandler()
+        self.controller = CombatController()
+        self.time_to_transition = False
+
+    def start(self):
+        # For example purposes we'll create a dummy player and monster
+        # In real usage these should be passed via incoming_transition_data
+        player = self.incoming_transition_data.get('player')
+        monster = self.incoming_transition_data.get('monster')
+        if player is None or monster is None:
+            # create simple stand-ins
+            class P: pass
+            class M: pass
+            player = P()
+            player.name = 'Hero'
+            player.health = 20
+            player.take_damage = lambda d: setattr(player, 'health', player.health - d)
+
+            monster = M()
+            monster.name = 'Goblin'
+            monster.health = 6
+            monster.take_damage = lambda d: setattr(monster, 'health', monster.health - d)
+
+        self.controller.start(player, monster, self.ui)
+
+    def end(self):
         pass
 
-    
+    def run(self, surface, time_delta):
+        # poll events and forward to controller
+        events = self.event_handler.poll()
+        for e in events:
+            # forward UI button events to controller
+            self.controller.handle_event(e)
+            # process quitting
+            import pygame
+            if e.type == pygame.QUIT:
+                self.time_to_quit_app = True
+
+        # update controller
+        self.controller.update(time_delta)
+
+        # draw UI (controller draws via UI adapter)
+        if self.controller.is_done():
+            self.outgoing_transition_data = {'result': self.controller.get_result()}
+            self.set_target_state_name('main_menu')
+            self.trigger_transition()
+
