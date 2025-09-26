@@ -9,7 +9,7 @@ from .base_app_state import BaseAppState
 from ui_adapter import UIAdapter
 from .combat_state import CombatState
 from Player import Player
-from Monster import Monster
+from monster_factory import random_monster
 
 
 
@@ -42,6 +42,7 @@ class MainMenu(BaseAppState):
         self.load_game_button = UIButton(pygame.Rect((550, 515), (150, 35)),
                                     "Load Game", self.ui_manager,
                                     tool_tip_text="<b>Click to Start.</b>")
+        print("MainMenu: created New Game and Load Game buttons")
 
     def end(self):
 
@@ -69,7 +70,8 @@ class MainMenu(BaseAppState):
                     ui_adapter = UIAdapter(None, None, self.ui_manager)
                     # create simple player and monster instances and pass them to the new state
                     player = Player("Hero")
-                    monster = Monster("Goblin", 1, 6, 1)
+                    monster = random_monster()
+                    print(f"MainMenu: New Game pressed, spawning monster {monster.name}")
 
                     combat_state = CombatState(ui_adapter, self.state_manager)
                     # provide incoming data so the combat state can use real objects
