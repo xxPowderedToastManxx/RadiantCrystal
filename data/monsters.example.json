@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Goblin",
+    "level": 1,
+    "stats": {"str": 8, "dex": 14, "con": 10, "int": 8, "wis": 8, "cha": 8},
+    "hp": 7,
+    "attack_bonus": 2,
+    "damage_die": "d6",
+    "desc": "Small, sneaky humanoid."
+  },
+  {
+    "name": "Kobold",
+    "level": 1,
+    "stats": {"str": 7, "dex": 12, "con": 9, "int": 8, "wis": 7, "cha": 8},
+    "hp": 5,
+    "attack_bonus": 1,
+    "damage_die": "d4",
+    "desc": "Small scaly humanoid that prefers traps and numbers."
+  },
+  {
+    "name": "Orc",
+    "level": 2,
+    "stats": {"str": 16, "dex": 12, "con": 14, "int": 8, "wis": 10, "cha": 8},
+    "hp": 30,
+    "attack_bonus": 4,
+    "damage_die": "d8",
+    "desc": "Brutish warrior, dangerous in groups."
+  },
+  {
+    "name": "Skeleton",
+    "level": 1,
+    "stats": {"str": 10, "dex": 14, "con": 10, "int": 6, "wis": 8, "cha": 5},
+    "hp": 8,
+    "attack_bonus": 1,
+    "damage_die": "d6",
+    "desc": "Animated bones; immune to poison and exhausted by bludgeoning (not modeled yet)."
+  },
+  {
+    "name": "Bandit",
+    "level": 1,
+    "stats": {"str": 12, "dex": 12, "con": 11, "int": 10, "wis": 10, "cha": 10},
+    "hp": 11,
+    "attack_bonus": 2,
+    "damage_die": "d6",
+    "desc": "Rough criminals; often attack in ambush."
+  }
+]
