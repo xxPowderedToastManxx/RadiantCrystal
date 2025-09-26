@@ -19,8 +19,8 @@ def get_monster_by_name(name: str, path: str = "data/monsters.json") -> Optional
     """Return a Monster instance matching the given name, or None if not found."""
     data = _ensure_cache(path)
     for entry in data:
-        if entry.get("name", "").lower() == name.lower():
-            return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0))
+            if entry.get("name", "").lower() == name.lower():
+                return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0), entry.get("damage_die") or entry.get("damage_die_spec"))
     return None
 
 
@@ -28,7 +28,7 @@ def random_monster(path: str = "data/monsters.json") -> Monster:
     """Return a random Monster instance from the JSON list."""
     data = _ensure_cache(path)
     entry = random.choice(data)
-    return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0))
+    return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0), entry.get("damage_die") or entry.get("damage_die_spec"))
 
 
 def list_monsters(path: str = "data/monsters.json"):
@@ -42,4 +42,4 @@ def get_monster_by_index(index: int, path: str = "data/monsters.json") -> Option
     if index < 0 or index >= len(data):
         return None
     entry = data[index]
-    return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0))
+    return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0), entry.get("damage_die") or entry.get("damage_die_spec"))
