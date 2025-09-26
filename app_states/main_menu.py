@@ -6,10 +6,10 @@ from pygame_gui.elements.ui_button import UIButton
 from pygame_gui.elements.ui_label import UILabel
 
 from .base_app_state import BaseAppState
-from ..ui_adapter import UIAdapter
+from ui_adapter import UIAdapter
 from .combat_state import CombatState
-from ..Player import Player
-from ..Monster import Monster
+from Player import Player
+from Monster import Monster
 
 
 

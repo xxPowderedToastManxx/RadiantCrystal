@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Goblin",
+    "level": 1,
+    "stats": {"str": 8, "dex": 14, "con": 10, "int": 8, "wis": 8, "cha": 8},
+    "hp": 7,
+    "attack_bonus": 2
+  },
+  {
+    "name": "Kobold",
+    "level": 1,
+    "stats": {"str": 7, "dex": 12, "con": 9, "int": 8, "wis": 7, "cha": 8},
+    "hp": 5,
+    "attack_bonus": 1
+  }
+]

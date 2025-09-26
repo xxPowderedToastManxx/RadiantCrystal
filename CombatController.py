@@ -11,6 +11,7 @@ from typing import Optional
 import random
 
 from DiceController import DiceController
+from mechanics import resolve_attack
 
 
 class CombatController:
@@ -53,13 +54,12 @@ class CombatController:
 
     def _on_player_choice(self, choice: str) -> None:
         if choice == "Attack":
-            attack_roll = self.dice.roll_d20()
-            if attack_roll >= 10:
-                damage = self.dice.roll_d6()
+            hit, roll, total, damage = resolve_attack(self.player, self.monster, self.dice)
+            if hit:
                 self.monster.take_damage(damage)
-                self.ui.draw_text(f"You hit the {self.monster.name} for {damage} damage!", 50, 300)
+                self.ui.draw_text(f"You hit the {self.monster.name} for {damage} damage! (roll {roll} total {total})", 50, 300)
             else:
-                self.ui.draw_text(f"You miss the {self.monster.name}!", 50, 300)
+                self.ui.draw_text(f"You miss the {self.monster.name}! (roll {roll} total {total})", 50, 300)
         elif choice == "Cast Spell":
             spell_roll = self.dice.roll_d20()
             if spell_roll >= 12:
@@ -89,14 +89,13 @@ class CombatController:
     def update(self, dt: float) -> None:
         """Called each frame by the app state. Handles monster turn when appropriate."""
         if self._state == "monster_turn":
-            # simple monster attack
-            monster_attack_roll = self.dice.roll_d20()
-            if monster_attack_roll >= 10:
-                monster_damage = self.dice.roll_d6()
-                self.player.take_damage(monster_damage)
-                self.ui.draw_text(f"The {self.monster.name} hits you for {monster_damage} damage!", 50, 450)
+            # resolve monster attack using mechanics
+            hit, roll, total, damage = resolve_attack(self.monster, self.player, self.dice)
+            if hit:
+                self.player.take_damage(damage)
+                self.ui.draw_text(f"The {self.monster.name} hits you for {damage} damage! (roll {roll} total {total})", 50, 450)
             else:
-                self.ui.draw_text(f"The {self.monster.name} misses you!", 50, 450)
+                self.ui.draw_text(f"The {self.monster.name} misses you! (roll {roll} total {total})", 50, 450)
 
             if self.player.health <= 0:
                 self._finish("monster")
