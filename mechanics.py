@@ -64,13 +64,27 @@ def resolve_attack(attacker, defender, dice_controller, attack_bonus: int = 0, a
     best, other = roll_d20(dice_controller, advantage)
     roll = best
     total = roll + atk_bonus
+
+    # Natural 20 is a critical hit: always hits and doubles damage dice
+    if roll == 20:
+        hit = True
+        # roll damage dice twice (critical)
+        if hasattr(attacker, "damage_die") and callable(attacker.damage_die):
+            dmg = attacker.damage_die() + attacker.damage_die()
+        else:
+            dmg = dice_controller.roll_d6() + dice_controller.roll_d6()
+        return hit, roll, total, dmg
+
+    # Natural 1 is an automatic miss
+    if roll == 1:
+        return False, roll, total, 0
+
     hit = total >= getattr(defender, "ac", 10)
-    # damage: use attacker's damage_die if present else d6
+    if not hit:
+        return False, roll, total, 0
+
     if hasattr(attacker, "damage_die") and callable(attacker.damage_die):
         dmg = attacker.damage_die()
     else:
-        # reasonable default
         dmg = dice_controller.roll_d6()
-    if not hit:
-        dmg = 0
-    return hit, roll, total, dmg
+    return True, roll, total, dmg

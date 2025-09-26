@@ -33,16 +33,17 @@ class MainMenu(BaseAppState):
 
         
     def start(self):
-        
         self.new_game_button = UIButton(pygame.Rect((350, 515), (150, 35)),
                                          "New Game", self.ui_manager,
                                          tool_tip_text="<b>Click to Start.</b>")
 
 
         self.load_game_button = UIButton(pygame.Rect((550, 515), (150, 35)),
-                                    "Load Game", self.ui_manager,
-                                    tool_tip_text="<b>Click to Start.</b>")
-        print("MainMenu: created New Game and Load Game buttons")
+                                         "Load Game", self.ui_manager,
+                                         tool_tip_text="<b>Click to Start.</b>")
+
+        # status label shown in the top-left to provide player feedback
+        self.status_label = UILabel(pygame.Rect((20, 20), (400, 30)), "", self.ui_manager)
 
     def end(self):
 
