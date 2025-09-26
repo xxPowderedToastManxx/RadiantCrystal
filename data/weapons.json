@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Short Sword",
+    "damage_die": "d6",
+    "attack_bonus": 0,
+    "desc": "A reliable short sword."
+  },
+  {
+    "name": "Rusty Spear",
+    "damage_die": "d8",
+    "attack_bonus": -1,
+    "desc": "An old spear with a blunt tip."
+  }
+]

@@ -7,7 +7,7 @@ Functions:
 - resolve_attack(attacker, defender, dice_controller, attack_bonus=0): performs an attack roll
   and returns (hit: bool, roll: int, total: int, damage: int).
 """
-from typing import Tuple
+from typing import Tuple, Optional
 
 
 def ability_mod(score: int) -> int:
@@ -65,14 +65,37 @@ def resolve_attack(attacker, defender, dice_controller, attack_bonus: int = 0, a
     roll = best
     total = roll + atk_bonus
 
+    def get_damage_from_attacker(atk, dc, critical: bool = False) -> int:
+        # Player with equipped weapon
+        if hasattr(atk, 'equipped_weapon') and getattr(atk, 'equipped_weapon') is not None:
+            # build temporary Monster to reuse damage logic
+            from Monster import Monster
+            tmp = Monster('tmp', damage_die_spec=getattr(atk.equipped_weapon, 'damage_die', None))
+            if critical:
+                return tmp.damage_die_with_controller(dc) + tmp.damage_die_with_controller(dc)
+            return tmp.damage_die_with_controller(dc)
+
+        # attacker provides damage_die_with_controller
+        if hasattr(atk, 'damage_die_with_controller') and callable(atk.damage_die_with_controller):
+            if critical:
+                return atk.damage_die_with_controller(dc) + atk.damage_die_with_controller(dc)
+            return atk.damage_die_with_controller(dc)
+
+        # legacy damage_die callable
+        if hasattr(atk, 'damage_die') and callable(atk.damage_die):
+            if critical:
+                return atk.damage_die() + atk.damage_die()
+            return atk.damage_die()
+
+        # fallback default d6
+        if critical:
+            return dc.roll_d6() + dc.roll_d6()
+        return dc.roll_d6()
+
     # Natural 20 is a critical hit: always hits and doubles damage dice
     if roll == 20:
         hit = True
-        # roll damage dice twice (critical)
-        if hasattr(attacker, "damage_die") and callable(attacker.damage_die):
-            dmg = attacker.damage_die() + attacker.damage_die()
-        else:
-            dmg = dice_controller.roll_d6() + dice_controller.roll_d6()
+        dmg = get_damage_from_attacker(attacker, dice_controller, critical=True)
         return hit, roll, total, dmg
 
     # Natural 1 is an automatic miss
@@ -83,8 +106,5 @@ def resolve_attack(attacker, defender, dice_controller, attack_bonus: int = 0, a
     if not hit:
         return False, roll, total, 0
 
-    if hasattr(attacker, "damage_die") and callable(attacker.damage_die):
-        dmg = attacker.damage_die()
-    else:
-        dmg = dice_controller.roll_d6()
+    dmg = get_damage_from_attacker(attacker, dice_controller, critical=False)
     return True, roll, total, dmg

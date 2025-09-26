@@ -6,6 +6,8 @@ import Inventory
 from typing import Dict, Any, Optional
 
 from mechanics import ability_mod
+from weapon import Weapon
+from typing import Optional as TypingOptional
 
 
 """Player model with D&D-like stats and helpers.
@@ -58,6 +60,26 @@ class Player:
         base_hp = 8 + con_mod
         self.max_health = health if health is not None else max(1, base_hp + (level - 1) * max(1, base_hp))
         self.health = self.max_health
+        # equipped weapon (optional)
+        self.equipped_weapon: TypingOptional[Weapon] = None
+
+    def damage_die_with_controller(self, dice_controller=None):
+        """Return damage using equipped weapon if present, otherwise fallback to d6."""
+        if self.equipped_weapon is not None:
+            spec = getattr(self.equipped_weapon, 'damage_die', None)
+            # create a temporary Monster-like object to reuse monster damage logic
+            class _Tmp:
+                pass
+
+            t = _Tmp()
+            t.damage_die_spec = spec
+            from Monster import Monster
+            # piggyback on Monster.damage_die_with_controller
+            return Monster('tmp').damage_die_with_controller(dice_controller)
+        # fallback
+        from DiceController import DiceController
+        dc = dice_controller or DiceController()
+        return dc.roll_d6()
 
     @property
     def ac(self) -> int:
@@ -105,6 +127,7 @@ class Player:
             "money": self.money,
             "stats": dict(self.stats),
             "ac": self.ac,
+            "equipped_weapon": repr(self.equipped_weapon) if self.equipped_weapon is not None else None,
         }
 
     @classmethod
