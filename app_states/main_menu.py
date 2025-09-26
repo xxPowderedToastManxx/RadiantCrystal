@@ -29,7 +29,7 @@ class MainMenu(BaseAppState):
         self.new_game_button = None
         self.load_game_button = None
 
-        print(screen_data.screen_size)
+    # display screen size in status label when start() runs
 
         
     def start(self):
@@ -72,7 +72,11 @@ class MainMenu(BaseAppState):
                     # create simple player and monster instances and pass them to the new state
                     player = Player("Hero")
                     monster = random_monster()
-                    print(f"MainMenu: New Game pressed, spawning monster {monster.name}")
+                    # show on-screen status
+                    try:
+                        self.status_label.set_text(f"Starting New Game: encountered {monster.name}")
+                    except Exception:
+                        pass
 
                     combat_state = CombatState(ui_adapter, self.state_manager)
                     # provide incoming data so the combat state can use real objects

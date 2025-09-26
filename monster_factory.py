@@ -29,3 +29,17 @@ def random_monster(path: str = "data/monsters.json") -> Monster:
     data = _ensure_cache(path)
     entry = random.choice(data)
     return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0))
+
+
+def list_monsters(path: str = "data/monsters.json"):
+    """Return a list of monster names (in order) from the JSON file."""
+    data = _ensure_cache(path)
+    return [entry.get("name", "") for entry in data]
+
+
+def get_monster_by_index(index: int, path: str = "data/monsters.json") -> Optional[Monster]:
+    data = _ensure_cache(path)
+    if index < 0 or index >= len(data):
+        return None
+    entry = data[index]
+    return Monster(entry.get("name"), entry.get("level", 1), entry.get("stats"), entry.get("hp"), entry.get("attack_bonus", 0))

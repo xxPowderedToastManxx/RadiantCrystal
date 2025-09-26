@@ -10,6 +10,8 @@ class CombatState(BaseAppState):
         self.event_handler = EventHandler()
         self.controller = CombatController()
         self.time_to_transition = False
+        self._player_label = None
+        self._monster_label = None
 
     def start(self):
         # For example purposes we'll create a dummy player and monster
@@ -31,6 +33,19 @@ class CombatState(BaseAppState):
             monster.take_damage = lambda d: setattr(monster, 'health', monster.health - d)
 
         self.controller.start(player, monster, self.ui)
+        # create simple HUD labels if ui_manager available via adapter
+        try:
+            ui_manager = self.ui._ui_manager
+            if ui_manager is not None:
+                import pygame
+                import pygame_gui
+                from pygame_gui.elements.ui_label import UILabel
+                # create labels; positions are arbitrary and can be tuned
+                self._player_label = UILabel(pygame.Rect((20, 60), (200, 25)), f"Player HP: {getattr(player, 'health', '?')}", ui_manager)
+                self._monster_label = UILabel(pygame.Rect((20, 90), (200, 25)), f"Monster HP: {getattr(monster, 'health', '?')}", ui_manager)
+        except Exception:
+            self._player_label = None
+            self._monster_label = None
 
     def end(self):
         pass
@@ -48,6 +63,25 @@ class CombatState(BaseAppState):
 
         # update controller
         self.controller.update(time_delta)
+
+        # update HUD labels
+        try:
+            player = self.controller.player
+            monster = self.controller.monster
+            if self._player_label is not None:
+                self._player_label.set_text(f"Player HP: {getattr(player, 'health', '?')}")
+            if self._monster_label is not None:
+                self._monster_label.set_text(f"Monster HP: {getattr(monster, 'health', '?')}")
+        except Exception:
+            # fallback: draw via adapter text
+            try:
+                if self.ui is not None:
+                    p = self.controller.player
+                    m = self.controller.monster
+                    self.ui.draw_text(f"Player HP: {getattr(p, 'health', '?')}", 20, 60)
+                    self.ui.draw_text(f"Monster HP: {getattr(m, 'health', '?')}", 20, 90)
+            except Exception:
+                pass
 
         # draw UI (controller draws via UI adapter)
         if self.controller.is_done():
